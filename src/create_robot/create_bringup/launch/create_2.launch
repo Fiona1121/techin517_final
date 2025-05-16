@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="config" default="$(find-pkg-share create_bringup)/config/default.yaml" />
+  <arg name="desc" default="true" />
+
+  <node name="create_driver" pkg="create_driver" exec="create_driver" output="screen">
+    <param from="$(var config)" />
+    <param name="robot_model" value="CREATE_2" />
+  </node>
+  
+  
+  <node name="rplidarNode"      	pkg="rplidar_ros"  type="rplidarNode" output="screen">
+    <param name="serial_port"     	type="string" value="/dev/ttyUSB0"/>
+    <param name="serial_baudrate" 	type="int"	value="115200"/><!--A1/A2 -->
+    <!--param name="serial_baudrate"  type="int"	value="256000"--><!--A3 -->
+    <param name="frame_id"        	type="string" value="laser"/>
+    <param name="inverted"        	type="bool"   value="false"/>
+    <param name="angle_compensate"	type="bool"   value="true"/>
+  </node> 
+
+  
+
+  <!-- Robot description -->
+  <include if="$(var desc)" file="$(find-pkg-share create_description)/launch/create_2.launch" />
+</launch>
